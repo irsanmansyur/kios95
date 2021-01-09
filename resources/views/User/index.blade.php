@@ -46,8 +46,10 @@
 
             <!-- Form Group (email address)-->
             <div class="form-group">
+              <input hidden name="id" value="{{ auth()->user()->name}}">
+
               <label class="small mb-1" for="inputEmailAddress">Email address</label>
-              <input class="form-control" id="inputEmailAddress" type="email" placeholder="Enter your email address" value="{{ old('email') ?? auth()->user()->email}}">
+              <input class="form-control" id="inputEmailAddress" type="email" name="email" placeholder="Enter your email address" value="{{ old('email') ?? auth()->user()->email}}">
               <span class="text-secondary mt-2">leave blank if you don't want to change</span>
             </div>
             <!-- Form Row-->

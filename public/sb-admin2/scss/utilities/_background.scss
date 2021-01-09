@@ -1,17 +1,34 @@
 // Background Gradient Utilities
 
-@each $color, $value in $theme-colors {
-  .bg-gradient-#{$color} {
-    background-color: $value;
-    background-image: linear-gradient(180deg, $value 10%, darken($value, 15%) 100%);
-    background-size: cover;
-  }
+@each $color,
+$value in $theme-colors {
+    .bg-gradient-#{$color} {
+        background-color: $value;
+        background-image: linear-gradient(180deg, $value 10%, darken($value, 15%) 100%);
+        background-size: cover;
+    }
+
+    @each $color2,
+    $value2 in $theme-colors {
+        .bg-gradient-#{$color}-to-#{$color2} {
+            background-color: $value;
+            background-image: linear-gradient(135deg, $value 0%, $value2 100%);
+        }
+
+    }
+
 }
 
 // Grayscale Background Utilities
 
-@each $level, $value in $grays {
-  .bg-gray-#{$level} {
-    background-color: $value !important;
-  }
+@each $level,
+$value in $grays {
+    .bg-gray-#{$level} {
+        background-color: $value !important;
+    }
+}
+
+.bg-gradient-primary-to-secondary {
+    background-color: #0061f2;
+    background-image: linear-gradient(135deg, #0061f2 0%, rgba(105, 0, 199, 0.8) 100%);
 }

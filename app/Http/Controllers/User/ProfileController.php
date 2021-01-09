@@ -2,23 +2,25 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseAdminController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProfileController extends Controller
+class ProfileController extends BaseAdminController
 {
   public function index()
   {
-    return view("User.index
-     ");
+    return view("User.index");
   }
   public function update()
   {
     $attr =   request()->validate([
       "name" => 'required|min:4',
+      "email" => "nullable|email|unique:users,email,id",
     ]);
+    if (!$attr["email"]) unset($attr['email']);
+
     $user = auth()->user();
     $user->update($attr);
     return redirect()->back()->with("success", "Profile Updated");

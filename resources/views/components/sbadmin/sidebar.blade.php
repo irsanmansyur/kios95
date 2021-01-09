@@ -13,7 +13,7 @@
 
   <!-- Nav Item - Dashboard -->
   <li class="nav-item">
-    <a class="nav-link" href="index.html">
+    <a class="nav-link" href="{{route('dashboard')}}">
       <i class="fas fa-fw fa-tachometer-alt"></i>
       <span>Dashboard</span></a>
   </li>
@@ -23,7 +23,14 @@
 
   @foreach($menus as $menu)
   <!-- Heading -->
-  @if(count($menu->navigations)>0)
+  <?php
+  $allow = false;
+  foreach ($menu->navigations as $i => $nav) {
+    if (auth()->user()->can($nav->permission_name)) {
+      $allow = true;
+    }
+  } ?>
+  @if($allow)
   <div class="sidebar-heading">
     {{$menu->name}}
   </div>
@@ -33,8 +40,9 @@
   @foreach($menu->navigations as $navigation)
   @can($navigation->permission_name)
   <li class="nav-item" id="{{$navigation->permission_name}}">
-    @if($navigation->url)
-    <a class="nav-link" href="#link">
+
+    @if($navigation->url || $navigation->route)
+    <a class="nav-link {{request()->is($navigation->url ?? '#')  || request()->is($navigation->url.'/*') || (Route::has($navigation->route?? '#') && request()->routeIs($navigation->route) ) ? ' active' :''}}" href="{{ Route::has($navigation->route ?? '#') ? route($navigation->route) : url($navigation->url?? '#')}}">
       <i class="fas fa-fw fa-cog"></i>
       <span>{{$navigation->name}}</span>
     </a>
@@ -57,7 +65,7 @@
   @endcan
   @endforeach
 
-  @if(count($menu->navigations)>0)
+  @if($allow)
   <!-- Divider -->
   <hr class="sidebar-divider d-none d-md-block">
   @endif
@@ -71,10 +79,16 @@
 
 </ul>
 <script>
-  let collapItem = document.querySelectorAll(".collapse-item");
+  let collapItem = document.querySelectorAll(".nav-link,.collapse-item");
   collapItem.forEach(item => {
     if (item.classList.contains("active")) {
-      item.closest(".collapse").classList.add("show")
+      console.log(item);
+      if (item.closest(".collapse")) {
+        item.closest(".collapse").classList.add("show")
+      }
+      if (item.closest(".nav-item")) {
+        item.closest(".nav-item").classList.add("active")
+      }
     }
   })
 </script>

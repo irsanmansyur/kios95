@@ -17,6 +17,7 @@
 
   <!-- Custom styles for this template-->
   <link href="/sb-admin2/css/sb-admin-2.min.css" rel="stylesheet">
+
   @stack('styles')
 
 
@@ -219,6 +220,9 @@
 
         </nav>
         <!-- End of Topbar -->
+        @isset($custom_header)
+        {{$custom_header}}
+        @else
         <header class="page-header page-header-compact page-header-light border-bottom bg-white mb-4">
           <div class="container-fluid">
             <div class="page-header-content">
@@ -232,6 +236,7 @@
             </div>
           </div>
         </header>
+        @endisset
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->

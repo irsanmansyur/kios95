@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\BaseAdminController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class SecurityController extends Controller
+class SecurityController extends BaseAdminController
 {
+
   public function index()
   {
+    $this->addUserCount();
     return view("User.security");
   }
   public function update()
