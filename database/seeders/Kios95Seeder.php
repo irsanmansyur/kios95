@@ -45,7 +45,7 @@ class Kios95Seeder extends Seeder
     ]);
     $mTambah->navigations()->create([
       "name" => "Pesanan Undangan",
-      "route" => "tambah.pesanan",
+      "route" => "tambah.pesanan.undangan",
       "permission_name" => $pPelanggan->name,
       "sequence_number" => 4,
     ]);
@@ -76,6 +76,12 @@ class Kios95Seeder extends Seeder
       "route" => "pesanan.undangan",
       "permission_name" => $pMenerimaPembayaran->name,
       "sequence_number" => 1,
+    ]);
+    $mPesanan->navigations()->create([
+      "name" => "Foto Pengantin",
+      "route" => "pesanan.foto-pengantin",
+      "permission_name" => $pMenerimaPembayaran->name,
+      "sequence_number" => 2,
     ]);
   }
 }

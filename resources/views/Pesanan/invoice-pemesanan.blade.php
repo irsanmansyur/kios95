@@ -1,4 +1,6 @@
 <x-backend-layout>
+  <div id="printSection" class="row">
+  </div>
   <x-slot name="header_right">
     <button class="btn btn-info rounded-lg" id="btnPrint">Print</button>
   </x-slot>
@@ -66,6 +68,7 @@
                   <div class="col-md-6">
                     <div class="table-responsive table-billing-history">
                       <table class="mb-0 table-sm">
+                        @if($pesanan->undangan()->exists())
                         <tbody>
                           <tr>
                             <td class="mr-2">Nama Undangan</td>
@@ -88,6 +91,26 @@
                             <td>{{rupiah($pesanan->jumlah_harga)}}</td>
                           </tr>
                         </tbody>
+                        @else
+                        <tbody>
+                          <tr>
+                            <td class="mr-2">Lokasi Foto Pengantin</td>
+                            <td>{{ $pesanan->fotopengantin->lokasi}}</td>
+                          </tr>
+                          <tr>
+                            <td class="mr-2">Jumlah Pesanan</td>
+                            <td>{{ $pesanan->jumlah_pesanan}}</td>
+                          </tr>
+                          <tr>
+                            <td class="mr-2">Harga / ROLL</td>
+                            <td>{{ rupiah($pesanan->harga_satuan)}}</td>
+                          </tr>
+                          <tr>
+                            <td class="mr-2">Total Harga</td>
+                            <td>{{rupiah($pesanan->jumlah_harga)}}</td>
+                          </tr>
+                        </tbody>
+                        @endif
                       </table>
                     </div>
                   </div>
@@ -102,11 +125,6 @@
     </div>
   </div>
 
-  <center>
-    <div id="printSection" class="row">
-    </div>
-
-  </center>
   @push("styles")
   <style>
     @media screen {

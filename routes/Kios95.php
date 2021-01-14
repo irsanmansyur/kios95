@@ -1,13 +1,16 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\PesananController;
-use App\Http\Controllers\admin\UndanganController;
 use App\Http\Controllers\Master\Undangan\ListUndanganController;
 use App\Http\Controllers\Master\UndanganController as MasterUndanganController;
 use App\Http\Controllers\Pembayaran\BayarUndanganController;
 use App\Http\Controllers\Pembayaran\Undangan\InvoiceController;
+use App\Http\Controllers\Pesanan\fotopengantin\BayarPesananFotoPengantinController;
+use App\Http\Controllers\Pesanan\fotopengantin\InvoicePesananFotoPengantinController;
+use App\Http\Controllers\Pesanan\FotoPengantin\ListPesananFotoPengantinController;
+use App\Http\Controllers\Pesanan\FotoPengantin\TambahPesananFotoPengantinController;
 use App\Http\Controllers\Pesanan\listPesananController;
+use App\Http\Controllers\Pesanan\undangan\TambahPesananUndanganController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\User\dataTableUserController;
 use Illuminate\Support\Facades\Route;
@@ -37,19 +40,36 @@ Route::middleware("auth")->prefix("admin")->group(function () {
       });
     });
 
-    Route::prefix("tambah")->group(function () {
-      Route::get("pesanan/{type?}/{user?}", [PesananController::class, "tambah"])->name("tambah.pesanan");
-      Route::post("pesanan/{type?}/{user?}", [PesananController::class, "store"]);
+
+    // ================ TAMBAH PESANAN ===================
+    Route::prefix("tambah/pesanan")->group(function () {
+      Route::get("undangan/{user?}", [TambahPesananUndanganController::class, "index"])->name("tambah.pesanan.undangan");
+      Route::post("undangan/{user?}", [TambahPesananUndanganController::class, "store"]);
+
+      Route::get("fotoPengantin/{user?}", [TambahPesananFotoPengantinController::class, "index"])->name("tambah.pesanan.foto-pengantin");
+      Route::post("fotoPengantin/{user?}", [TambahPesananFotoPengantinController::class, "store"]);
     });
   });
+
+  // ========================== PEMBAYARAN =========================
   Route::middleware("can:Menerima Pembayaran")->prefix("pembayaran")->group(function () {
     Route::get("undangan/{pesanan:no_pesanan?}", "App\Http\Controllers\Pembayaran\BayarUndanganController@index")->name("pembayaran.undangan");
     Route::post("undangan/{pesanan:no_pesanan?}", "App\Http\Controllers\Pembayaran\BayarUndanganController@update");
     Route::get("undangan/{pembayaran:no_invoice?}/invoice", [InvoiceController::class, "index"])->name("pembayaran.undangan.invoice");
+
+    Route::get("foto-pengantin/{pesanan:no_pesanan?}", [BayarPesananFotoPengantinController::class, "index"])->name("pembayaran.foto-pengantin");
+    Route::post("foto-pengantin/{pesanan:no_pesanan?}", [BayarPesananFotoPengantinController::class, "update"]);
+    Route::get("foto-pengantin/{pembayaran:no_invoice?}/invoice", [InvoicePesananFotoPengantinController::class, "index"])->name("pembayaran.foto-pengantin.invoice");
   });
+
+
+  // ================= PESANAN =================
   Route::middleware("can:Mengolah Pesanan")->prefix("pesanan")->group(function () {
     Route::get("undangan", [ListUndanganController::class, "index"])->name("pesanan.undangan");
     Route::get("undangan/datatable", [ListUndanganController::class, "datatable"])->name("pesanan.undangan.datatable");
+
+    Route::get("foto-pengantin", [ListPesananFotoPengantinController::class, "index"])->name("pesanan.foto-pengantin");
+    Route::get("foto-pengantin/datatable", [ListPesananFotoPengantinController::class, "datatable"])->name("pesanan.foto-pengantin.datatable");
   });
 });
 
@@ -62,6 +82,8 @@ Route::prefix("data-table")->group(function () {
 Route::prefix("select2")->group(function () {
   Route::get("undangan", [MasterUndanganController::class, "select2"])->name("undangan.select2");
   Route::get("pesanan-undangan", [listPesananController::class, "liveSearchSelect2"])->name("pesanan.select2");
+
+  Route::get("pesanan-foto-undangan/{status?}", [ListPesananFotoPengantinController::class, "liveSearchSelect2"])->name("pesanan.foto-pengantin.select2");
 });
 
 Route::get("test", [TestController::class, "index"])->name("test");

@@ -19,6 +19,10 @@ class Pesanan extends Model
   {
     return $this->belongsTo(Undangan::class, "model_id");
   }
+  public function fotopengantin()
+  {
+    return $this->belongsTo(FotoPengantin::class, "model_id");
+  }
   // public function getCreatedAtAttribute($val)
   // {
   //   return (new Carbon($val))->format("d F Y");

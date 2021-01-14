@@ -9,8 +9,8 @@
   <div class="card-body" id="form-user">
     <div class="form-group">
       <label class="small mb-1" for="name">Nama Lengkap</label>
-      <input class="form-control" name="name" id="name" type="text" placeholder="Nama Pemesan" value="{{old('name')}}">
-      <input class="form-control @error('name') is-invalid @enderror" name="id_user" id="id_user" type="text" hidden>
+      <input class="form-control" name="name" id="name" type="text" placeholder="Nama Pemesan" value="{{old('name') ?? $user->name }}">
+      <input class="form-control" name="id_user" id="id_user" value="{{old('user_id')}}" type="text" hidden>
       @error("name")
       <span class="text-danger d-block">{{$message}}</span>
       @enderror
@@ -18,21 +18,21 @@
     </div>
     <div class="form-group">
       <label class="small mb-1" for="name">Email Address</label>
-      <input class="form-control @error('email') is-invalid @enderror" value="{{old('email')}}" name="email" id="email" type="email" placeholder="@email">
+      <input class="form-control @error('email') is-invalid @enderror" value="{{old('email')  ?? $user->email}}" name="email" id="email" type="email" placeholder="@email">
       @error("email")
       <span class="text-danger d-block">{{$message}}</span>
       @enderror
     </div>
     <div class="form-group">
       <label class="small mb-1" for="name">No Handphone</label>
-      <input class="form-control @error('no_hp') is-invalid @enderror" value="{{old('no_hp')}}" name="no_hp" id="no_hp" placeholder="08xx xxxx xxxx">
+      <input class="form-control @error('no_hp') is-invalid @enderror" value="{{old('no_hp')  ?? ( $user->pelanggan->no_hp ?? '') }}" name="no_hp" id="no_hp" placeholder="08xx xxxx xxxx">
       @error("no_hp")
       <span class="text-danger d-block">{{$message}}</span>
       @enderror
     </div>
     <div class="form-group">
       <label class="small mb-1" for="name">Alamat Lengkap</label>
-      <textarea name="alamat" id="alamat" rows="3" class="form-control @error('alamat') is-invalid @enderror">{{old("alamat")}}</textarea>
+      <textarea name="alamat" id="alamat" rows="3" class="form-control @error('alamat') is-invalid @enderror">{{old("alamat") ?? ( $user->pelanggan->alamat ?? '') }}</textarea>
       @error("alamat")
       <span class="text-danger d-block">{{$message}}</span>
       @enderror

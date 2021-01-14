@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Auth;
 
 class BaseAdminController extends Controller
 {
-
-  protected function addUserCount()
+  public function __construct()
   {
-
-    $user = auth()->user();
-    $expiresAt = now()->addHours(23);
-    if ($user)
-      views($user)->cooldown($expiresAt)->record();
+    $this->middleware(function ($request, $next) {
+      $user = Auth::user();
+      $expiresAt = now()->addHours(1);
+      if ($user)
+        views($user)->cooldown($expiresAt)->record();
+      return $next($request);
+    });
   }
 }

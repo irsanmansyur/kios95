@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Master\Undangan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Pesanan;
+use App\Models\Undangan;
 use Yajra\DataTables\Facades\DataTables;
 
 class ListUndanganController extends Controller
@@ -17,6 +18,7 @@ class ListUndanganController extends Controller
     $model = Pesanan::query();
     return DataTables::of($model)
       ->filter(function ($query) {
+        $query->where("model_type", Undangan::class);
         $query->with("pembayaran");
         if (request()->has('search') && request('search')['value']) {
           $query->where('no_pesanan', 'like', '%' . request('search')['value'] . '%');

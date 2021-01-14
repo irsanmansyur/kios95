@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class FotoPengantin extends Model
 {
-    use HasFactory;
+  use HasFactory;
+  protected $guarded = [];
+
+  public function pesanan()
+  {
+    return $this->hasOne(Pesanan::class);
+  }
 }
